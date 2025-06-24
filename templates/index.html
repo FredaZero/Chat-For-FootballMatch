@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Chatbot</h2>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <!-- Chat messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <form id="chat-form">
+                <input type="text" name="value1" id="user-input" placeholder="Type a message..." required />
+                <button type="submit" id="send-btn">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("chat-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const inputBox = document.getElementById("user-input");
+            const message = inputBox.value;
+            if (message.trim() === "") return;
+
+            addMessageToChat("You", message);
+            inputBox.value = "";
+
+            // Send message to the server and get the response
+            fetch("/parse", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
+                    "value1": message
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder('utf-8');
+                return readStream(reader, decoder);
+            })
+            .then(eventSource => {
+                eventSource.onmessage = function(event) {
+                    addMessageToChat("Bot", event.data);
+                };
+                eventSource.onerror = function() {
+                    eventSource.close();
+                };
+            })
+            .catch(error => console.error('There was a problem with your fetch operation:', error));
+        });
+
+        async function readStream(reader, decoder) {
+            const eventSource = new EventSource("/parse");
+            let { done, value } = await reader.read();
+            while (!done) {
+                const decodedValue = decoder.decode(value, { stream: true });
+                const lines = decodedValue.split('\n');
+                for (let line of lines) {
+                    if (line.startsWith('data: ')) {
+                        const message = line.substring(6);
+                        addMessageToChat("Bot", message);
+                    }
+                }
+                ({ done, value } = await reader.read());
+            }
+            return eventSource;
+        }
+
+        function addMessageToChat(sender, message) {
+            const chatBox = document.getElementById("chat-box");
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("chat-message", sender.toLowerCase());
+            messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>

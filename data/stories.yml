@@ -1,0 +1,65 @@
+version: "3.1"
+
+stories:
+- story: User Wants to Check for a Match with ID
+  steps:
+  - intent: greet
+  - action: utter_start_conv
+  - intent: get_football_match_record
+  - action: simple_football_form
+  - active_loop: simple_football_form
+
+
+- story: User Wants to Check for a Match without ID
+  steps:
+  - intent: ask_for_league_ID
+  - action: utter_ask_league_name
+  - intent: give_info_about_league_name 
+  - action: action_ask_for_ID
+  - action: simple_football_form
+  - active_loop: simple_football_form
+  
+- story: thankness
+  steps:
+  - intent: thanks
+  - action: utter_thanks
+
+- story: again
+  steps:
+  - intent: search_again
+  - action: utter_assure
+  - action: simple_football_form
+  - active_loop: simple_football_form
+
+- story: goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User Doesn't Want to Check for a Match
+  steps:
+  - intent: greet
+  - action: utter_start_conv
+  - intent: get_football_match_record
+  - action: simple_football_form
+  - active_loop: simple_football_form
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+- story: interactive_story_1
+  steps:
+  - intent: greet
+  - action: utter_start_conv
+  - intent: get_football_match_record
+  - action: simple_football_form
+  - active_loop: simple_football_form
+  - slot_was_set:
+    - requested_slot: league_ID
+  - intent: get_football_match_record
+  - action: simple_football_form
+  - slot_was_set:
+    - requested_slot: league_ID

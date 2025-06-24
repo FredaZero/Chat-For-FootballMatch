@@ -1,0 +1,131 @@
+version: "3.1"
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: thanks
+  examples: |
+    - thanks!
+    - thank you.
+    - thank you mate.
+    - very helpful.
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+- intent: stop
+  examples: |
+    - stop
+    - I want to quit
+    - I don't want to continue
+    - I want to stop
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+- intent: get_football_match_record
+  examples: |
+    - I want to know what happened in a football match in [2021](season) season.
+    - I'd like to check the information of a football match.
+    - I want to get the latest information about a football match.
+    - I would like to know the record of [League Cup](league_name) in [2021](season) season.
+    - I need to know the record of a football match.
+    - I'm wondering what record right now does [West Ham](football_team) have?
+    - I am looking for information about the soccer team called [Burnley](football_team).
+    - I want to check previous record of a football team.
+    - I'd like to know about the [World Cup](league_name).
+    - I'm a fan of the Stoke City of the EPL, what is their record right now?
+    - I was wondering what's the record of a football team.
+    - I want to know the record of a football team.
+    - I want to check record of a previous football match.
+    - I want to check football match record.
+
+- intent: search_again
+  examples: |
+    - Can I start a new search?
+    - Can I check another football team record?
+    - I want to search another team.
+    - I want to check the information of another match.
+    - I would like to check the information again.
+    - Can I make another search?
+    
+- intent: inform_league_season_and_team
+  examples: |
+    - Yes, I want to know what happened in the [2021](season) season of league [39](league_ID).
+    - The league [2](league_ID) in [2019](season) season.
+    - Yes, I know, the match was in season [2020](season) and the league ID is [40](league_ID).
+    - Yes, I want information about the [2021](season) season in league [39](league_ID).
+    - Give me the stats for [2022](season) in league [116](league_ID).
+    - Yes, I want to know what happened in league [100](league_ID).
+    - Yes, it's league [50](league_ID).
+    - I'm looking for the record of [Manchester United](football_team) in league [39](league_ID).
+    - League [20](league_ID).
+    - Season [2021](season).
+    - The match is in the [2019](season) season.
+    - Events in season [2021](season).
+    - I want to check the win lose record of [Manchester City](football_team) in season [2021](season).
+    - The team I am looking for is [AFC Bournemouth](football_team).
+    - I want to check for [Brighton](football_team).
+    - Team [Everton](football_team).
+    - Team [Stoke City](football_team).
+    - Team [Everton](football_team).
+- intent: ask_for_league_ID
+  examples: |
+    - I don't know what is the league ID
+    - I need to check league ID
+    - I don't know league ID
+    - Can you help me check the league ID?
+    - I want to check league ID
+    - I have to know what is the league ID.
+- intent: give_info_about_league_name
+  examples: |
+    - I need to check the league ID for the [National League](league_name).
+    - Can you tell me what is the corresponding ID for the [FA WSL](league_name)?
+    - What is the league ID for the [Bundesliga](league_name)?
+    - League [Serie A](league_name).
+    - The league I'm looking for is the [La Liga](league_name)?
+    - What was the ID for the league [Ligue 1](league_name)?
+    - Please tell me the ID for league [Eredivisie](league_name).
+    - [UEFA Champions League](league_name).
+    - League [Scottish Premiership](league_name).
+    - [Jupiler Pro League](league_name)?
+    - [World Cup](league_name).
+    - 
+- regex: league_ID
+  examples: |
+    - \b\d{1,4}\b
+- regex: season
+  examples: |
+    - \b(19|20)\d{2}\b

@@ -1,0 +1,97 @@
+version: '3.1'
+intents:
+- affirm
+- ask_for_league_ID
+- bot_challenge
+- get_football_match_record
+- give_info_about_league_name
+- goodbye
+- greet
+- inform_league_season_and_team
+- stop
+- thanks
+- search_again
+entities:
+- football_team
+- league_ID
+- league_name
+- season
+slots:
+  football_team:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: football_team
+      conditions:
+        - active_loop: simple_football_form
+          requested_slot: football_team
+     
+  league_ID:
+    type: float
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: league_ID
+      conditions:
+        - active_loop: simple_football_form
+          requested_slot: league_ID
+      
+  league_name:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: league_name
+  season:
+    type: float
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: season
+      conditions:
+        - active_loop: simple_football_form
+          requested_slot: season
+      
+forms:
+  simple_football_form:
+    required_slots:
+    - league_ID
+    - season
+    - football_team
+responses:
+  utter_goodbye:
+  - text: Bye
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_start_conv:
+  - text: Hey! I'm an assistant for football match record checking. How can I help you?
+  utter_submit:
+  - text: I will now submit the information and check the record for you.
+  utter_ask_continue:
+  - text: Are you sure you want to stop the form?
+  utter_ask_season:
+  - text: What's the year of the match you are looking for?
+  utter_ask_league_ID:
+  - text: Do you know the league ID of the match?
+  utter_ask_football_team:
+  - text: What team you want to check the record for?
+  utter_ask_league_name:
+  - text: Please tell me the name of the league you want to check.
+  utter_thanks:
+  - text: My pleasure! Anything else I can help?
+  utter_assure:
+  - text: Sure! I will collect information from you again.
+actions:
+- utter_start_conv
+- action_get_football_match_record
+- action_reset_slots
+- action_ask_for_ID
+- validate_simple_football_form
+- utter_submit
+- utter_ask_league_name
+- utter_ask_continue
+- utter_thanks
+- utter_assure
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

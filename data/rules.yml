@@ -1,0 +1,27 @@
+version: "3.1"
+
+rules:
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+
+  
+
+- rule: Submit Football Form
+  condition:
+  - active_loop: simple_football_form
+  steps:
+  - action: simple_football_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_submit
+  - action: action_get_football_match_record
+  - action: action_reset_slots
